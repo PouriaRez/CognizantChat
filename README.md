@@ -18,7 +18,7 @@ docker-compose up --build
 3.  Open your browser at:
 
 ```bash
-   http://localhost:3000
+http://localhost:3000
 ```
 
 ### **Option 2: Local Development**
