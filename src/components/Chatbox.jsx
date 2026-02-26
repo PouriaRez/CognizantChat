@@ -66,12 +66,12 @@ const Chatbox = () => {
 
   const displayMessages = () => {
     return (
-      <div className="flex flex-col max-h-full w-3/4 overflow-y-auto ">
+      <div className="flex flex-col max-h-full w-3/4 overflow-y-auto p-5 ">
         {messages.slice(1).map((msg) => {
           return msg.role === 'system' ? (
             <div
               key={msg.content}
-              className="w-1/2 flex flex-col justify-start m-5 text-white"
+              className="w-1/2 flex flex-col justify-start m-5 text-zinc-100 leading-relaxed text-sm bg-zinc-800 rounded-xl p-2"
             >
               <ReactMarkdown remarkPlugins={[remarkGfm]}>
                 {msg.content}
@@ -80,7 +80,7 @@ const Chatbox = () => {
           ) : (
             <div
               key={msg.content}
-              className="w-full flex justify-end text-white"
+              className="w-full flex justify-end text-zinc-100 leading-relaxed text-sm bg-indigo-600 rounded-xl p-2"
             >
               {msg.content}
             </div>
@@ -92,7 +92,7 @@ const Chatbox = () => {
   };
 
   return (
-    <div className="bg-[#121212] h-dvh w-dvw flex flex-col justify-between items-center">
+    <div className="bg-zinc-950 h-dvh w-dvw flex flex-col justify-between items-center">
       {err && <div>{err}</div>}
       {displayMessages()}
       <InputBar onSend={handleSubmit} />

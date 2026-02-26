@@ -17,14 +17,17 @@ const InputBar = ({ onSend }) => {
       onSubmit={handleSubmit}
     >
       <input
-        className="w-full h-10 border border-white text-white"
+        className="w-full h-10 border border-white text-white rounded-2xl p-2"
         value={input}
         onChange={(e) => setInput(e.target.value)}
         placeholder="Type here..."
         type="text"
       ></input>
       <div>
-        <button type="submit" className="text-white bg-gray-900">
+        <button
+          type="submit"
+          className="text-white bg-gray-900 hover:cursor-pointer"
+        >
           Send
         </button>
       </div>
