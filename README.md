@@ -2,11 +2,11 @@
 
 ## **Getting Started**
 
-You can run the project **either using Docker** or **locally with Node**.
+You can run the project **either using Docker** or **locally**.
 
 ---
 
-### **Option 1: Using Docker**
+### **Option 1: Docker**
 
 1. Make sure **Docker** and **Docker Compose** are installed.
 2. Build and start the container:
@@ -21,7 +21,7 @@ docker-compose up --build
 http://localhost:3000
 ```
 
-### **Option 2: Local Development**
+### **Option 2: Local**
 
 1.  Install dependencies:
 
