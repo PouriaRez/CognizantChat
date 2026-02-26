@@ -38,5 +38,5 @@ npm run dev
 3.  Open your browser at:
 
 ```bash
-   http://localhost:3000
+http://localhost:3000
 ```
