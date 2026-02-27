@@ -1,39 +1,42 @@
 import { chatState } from '../state/state';
 import ReactMarkdown from 'react-markdown';
 import remarkGfm from 'remark-gfm';
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useRef } from 'react';
 import InputBar from './InputBar';
-// current issue: When removing a chat, it removes the Active Chat ID also! need to fix, put it to top of page!
-import { ToastContainer, toast } from 'react-toastify';
+import TypingBubble from './typingBubble';
+import { showError } from '../utils/toast';
+import { MdOutlineWavingHand } from 'react-icons/md';
 
 const TextBox = () => {
-  const { chats, activeChatId, addMessage } = chatState();
-  const [err, setErr] = useState('');
-  const [loading, setLoading] = useState({ id: '', state: false });
   const API_TOKEN = import.meta.env.VITE_HF_API_TOKEN;
   const API_URL = 'https://router.huggingface.co/v1/chat/completions';
+  const { chats, activeChatId, addMessage, err, setErr, typing, setTyping } =
+    chatState();
   const bottomRef = useRef(null);
   const activeChat = chats.find((chat) => chat.id === activeChatId);
 
+  // Scroll to bottom of messages upon receiving/sending message.
   useEffect(() => {
     bottomRef.current?.scrollIntoView({ behavior: 'smooth' });
   }, [activeChat.messages.length]);
 
-  const callToast = () => {
-    toast.error(`${err}`, {
-      position: 'top-center',
-      autoClose: 1000,
-      hideProgressBar: true,
-      closeOnClick: true,
-      theme: 'dark',
-    });
-  };
+  // Display toast if an error occurs.
+  useEffect(() => {
+    if (!err) return;
+    showError(err);
+    setErr('');
+  }, [err, setErr]);
 
+  useEffect(() => {
+    typing;
+  }, [typing]);
+
+  // Handles user input submission and sends to AI function
   const handleSubmit = async (input) => {
     setErr('');
     if (!API_TOKEN) {
       setErr('AI token missing! Add your API token in the .env file.');
-      setLoading({ id: activeChatId, state: false });
+      setTyping({ id: activeChatId, state: false });
       return;
     }
     try {
@@ -50,9 +53,10 @@ const TextBox = () => {
     }
   };
 
+  // Handles input submission to the AI itself
   const sendToLLM = async (updatedMessages) => {
     setErr('');
-    setLoading({ id: activeChatId, state: true });
+    setTyping({ id: activeChatId, state: true });
     try {
       const res = await fetch(API_URL, {
         method: 'POST',
@@ -63,8 +67,8 @@ const TextBox = () => {
         body: JSON.stringify({
           model: 'zai-org/GLM-4.5',
           messages: updatedMessages,
-          max_tokens: 200,
-          temperature: 0.5,
+          // max_tokens: 200,
+          // temperature: 0.5,
         }),
       });
       const result = await res.json();
@@ -78,13 +82,13 @@ const TextBox = () => {
       setErr('Something went wrong. Please try again.');
       console.error(error);
     }
-    setLoading({ id: activeChatId, state: false });
+    setTyping({ id: activeChatId, state: false });
   };
 
   return (
-    <div className=" h-full w-full flex flex-col justify-between items-center">
-      <div className="w-full flex flex-col max-h-full overflow-y-auto leading-relaxed text-sm p-2 gap-2 text-zinc-100">
-        <div className="flex justify-center items-center">
+    <div className=" h-full w-full flex flex-col justify-between items-center ">
+      <div className="w-full flex flex-col max-h-full overflow-y-auto leading-relaxed text-sm md:text-base  p-2 gap-4 text-zinc-100">
+        <div className="flex justify-center items-center p-2">
           {activeChat?.title}
         </div>
 
@@ -92,7 +96,7 @@ const TextBox = () => {
           return msg.role === 'system' ? (
             <div
               key={index}
-              className="w-full flex flex-col justify-start m-5 bg-zinc-800 rounded-xl p-2"
+              className="w-fit flex flex-col justify-start bg-zinc-700 rounded-xl p-2"
             >
               <ReactMarkdown remarkPlugins={[remarkGfm]}>
                 {msg.content}
@@ -100,18 +104,26 @@ const TextBox = () => {
             </div>
           ) : (
             <div key={index} className="w-full flex justify-end">
-              <div className=" bg-indigo-600 rounded-xl p-2">{msg.content}</div>
+              <div className="bg-violet-600/50 text-white rounded-xl p-2">
+                {msg.content}
+              </div>
             </div>
           );
         })}
-        {loading.id === activeChatId && loading.state && (
-          <div className="text-white">loading...</div>
+
+        {typing.id === activeChatId && typing.state && (
+          <div className="w-fit text-white bg-zinc-700 rounded-xl p-2">
+            <TypingBubble />
+          </div>
         )}
+
         <div ref={bottomRef} />
       </div>
-      {err && <ToastContainer pauseOnFocusLoss={false} />}
       {activeChat.messages.length < 2 && (
-        <div className="text-center text-zinc-200">Start chatting!</div>
+        <div className="flex justify-center items-center gap-1 text-center text-zinc-400">
+          Ask me anything
+          <MdOutlineWavingHand size={20} />
+        </div>
       )}
       <InputBar
         chatId={activeChat.id}

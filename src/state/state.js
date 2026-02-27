@@ -1,3 +1,25 @@
+/*
+Types:
+  chats = [{
+          id: crypto.randomUUID(),
+          title: 'New Chat',
+          messages: [
+            {
+              role: 'system',
+              content: `You are here to help the user with anything they ask for within reason.
+            Respond using Markdown. Assume that you are returning to a dark background.
+            Use headings, lists, code blocks, and emphasis where appropriate.`,
+            },
+          ],
+          input: '',
+          createdAt: Date.now(),
+        }]
+
+  activeChatId: ''
+  err: ''
+  typing = {id: chatId, state: True | False}
+*/
+
 import { create } from 'zustand';
 import { persist } from 'zustand/middleware';
 
@@ -5,6 +27,8 @@ export const chatState = create(
   persist((set) => ({
     chats: [],
     activeChatId: null,
+    err: null,
+    typing: {},
 
     createChat: () => {
       const chat = {
@@ -15,6 +39,7 @@ export const chatState = create(
             role: 'system',
             content: `You are here to help the user with anything they ask for within reason.
           Respond using Markdown. Assume that you are returning to a dark background.
+          Make sure spacing is well respected and it is easy to read.
           Use headings, lists, code blocks, and emphasis where appropriate.`,
           },
         ],
@@ -77,6 +102,14 @@ export const chatState = create(
             : chat,
         ),
       }));
+    },
+
+    setErr: (message) => {
+      set({ err: message });
+    },
+
+    setTyping: (typingState) => {
+      set({ typing: typingState });
     },
   })),
   { name: 'chat-session-state' },
