@@ -9,3 +9,14 @@ make a video demo.
 
 Add:
     1. use companies brand and collar [Done]
+
+
+
+TO ADD:
+    Make it so that when the user enters an input and is waiting for an output, they cannot enter another input
+    Allow for editing of the chat names
+    Create a clear all button
+    Add logo to mobile sizes
+
+    make new chat button into a pencil looking thing?
+    
