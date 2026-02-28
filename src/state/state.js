@@ -1,23 +1,31 @@
 /*
+state.js functionality:
+  - Creates states that are globally accessible
+  - Functions allow for states to be changed as need be
+  - Uses persist to automatically create an instance in localstorage
+  - AI is given it's initial prompt here
+
+Last edited: 2/27/2026
+
+------------------------------------------------
 Types:
   chats = [{
           id: crypto.randomUUID(),
-          title: 'New Chat',
+          title: string,
           messages: [
             {
-              role: 'system',
-              content: `You are here to help the user with anything they ask for within reason.
-            Respond using Markdown. Assume that you are returning to a dark background.
-            Use headings, lists, code blocks, and emphasis where appropriate.`,
+              role: 'system' | 'user' ,
+              content: string,
             },
           ],
-          input: '',
+          input: string,
           createdAt: Date.now(),
         }]
 
-  activeChatId: ''
-  err: ''
+  activeChatId: string
+  err: string
   typing = {id: chatId, state: True | False}
+  
 */
 
 import { create } from 'zustand';
@@ -38,9 +46,13 @@ export const chatState = create(
           {
             role: 'system',
             content: `You are here to help the user with anything they ask for within reason.
-          Respond using Markdown. Assume that you are returning to a dark background.
-          Make sure spacing is well respected and it is easy to read.
-          Use headings, lists, code blocks, and emphasis where appropriate.`,
+            Follow the guidelines below:
+              - Respond using Markdown. Assume that you are returning to a dark background.
+              - Use all Markdown syntax to make it and easy to read.
+              - Make sure spacing is well respected and every new line is clearly a new line and new paragraphs are easy to distinguish.
+              - make it easy to read.
+              - Have clear spacing between ideas, topics, lists, etc.
+              - Use headings, lists, code blocks, and emphasis where appropriate.`,
           },
         ],
         input: '',

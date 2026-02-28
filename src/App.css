@@ -1,4 +1,13 @@
+/*
+App.css functionality:
+  - Sets root margin to 0
+  - Imports tailwindcss and necessary plugins
+  
+Last edited: 2/27/2026
+*/
+
 @import 'tailwindcss';
+@plugin "@tailwindcss/typography";
 
 * {
   margin: 0;

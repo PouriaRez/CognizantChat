@@ -1,8 +1,19 @@
-import { chatState } from '../state/state';
+/*
+InputBar.jsx functionality:
+  - Input bar that is used in every chat for user input
+  - Allows for one input at a time.
+  - AI must respond before next input is allowed
+  - Used in ChatBox.jsx
+
+Last edited: 2/27/2026
+*/
+
+import { chatState } from '../../state/state';
 
 const InputBar = ({ chatId, onSend, input }) => {
-  const { setNewInput } = chatState();
+  const { setNewInput, typing } = chatState();
 
+  // Handles user submit of prompt/input
   const handleSubmit = (event) => {
     event.preventDefault();
     if (!input.trim()) return;
@@ -16,17 +27,22 @@ const InputBar = ({ chatId, onSend, input }) => {
       onSubmit={handleSubmit}
     >
       <input
+        aria-label="prompt-input-box"
         className="w-full h-10 bg-zinc-800 border border-zinc-700 text-zinc-100 rounded-2xl p-2 "
         value={input ?? ''}
         onChange={(e) => setNewInput(chatId, e.target.value)}
         placeholder="Type here..."
         type="text"
-      ></input>
+      />
       <div>
         <button
+          aria-label="submit-prompt-button"
           type="submit"
-          className="text-white hover:cursor-pointer bg-violet-600
-hover:bg-violet-500 rounded-xl p-2"
+          disabled={typing.state}
+          className={`text-white hover:cursor-pointer bg-blue-800
+                    hover:bg-blue-900 rounded-xl p-2
+                      disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:bg-blue-800
+                    `}
         >
           Send
         </button>
