@@ -1,5 +1,9 @@
 # Cognizant AI Chat App Assessment
 
+## Video Demo
+
+Check out the live demo of this project here: [View Video Demo](https://youtu.be/njkWXW7odxs)
+
 ## **Getting Started**
 
 You can run the project **either using Docker** or **locally**.
