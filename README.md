@@ -1,8 +1,5 @@
-# Cognizant AI Chat App Assessment
+# Multi AI Chat App 
 
-## Video Demo
-
-Check out the live demo of this project here: [View Video Demo](https://youtu.be/njkWXW7odxs)
 
 ## **Getting Started**
 
