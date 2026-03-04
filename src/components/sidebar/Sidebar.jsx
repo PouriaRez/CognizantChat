@@ -68,12 +68,12 @@ const Sidebar = () => {
             <img
               src={logo}
               className={`${collapsed && 'hidden'}`}
-              alt="Cognizant"
+              alt="logo"
             />
             <img
               src={plainLogo}
               className={`${!collapsed && 'hidden md:hidden'} md:block w-7`}
-              alt="Cognizant"
+              alt="small_logo"
             />
           </div> */}
           <button
